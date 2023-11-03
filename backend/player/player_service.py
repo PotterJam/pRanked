@@ -5,5 +5,5 @@ from ranking.rating import Rating
 
 @dataclass
 class Player:
-    name: str
+    username: str
     rating: Rating
