@@ -1,7 +1,8 @@
 import unittest
 
 import glicko
-from domainObjects import Rating, Outcome
+from ranking.outcome import Outcome
+from ranking.rating import Rating
 
 
 class GlickoCalculatorTests(unittest.TestCase):
