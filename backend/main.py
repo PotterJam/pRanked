@@ -1,6 +1,6 @@
 from fastapi import FastAPI
 
-from routers import player
+from player import player
 
 app = FastAPI()
 app.include_router(player.router)
