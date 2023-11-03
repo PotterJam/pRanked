@@ -11,8 +11,8 @@ def main():
 
         if table_exists:
             # The 'migrations' table exists, so get the latest 'migration_id'
-            con.execute("SELECT MAX(migration_id) FROM migrations")
-            latest_migration_id = con.fetchone()[0]
+            max_migration_result = con.execute("SELECT MAX(migration_id) FROM migrations")
+            latest_migration_id = max_migration_result.fetchone()[0]
 
             if latest_migration_id is not None:
                 migrations_to_skip = latest_migration_id
@@ -22,10 +22,23 @@ def main():
         counter = 0
 
         for migration_number, description, sql in __migrations()[migrations_to_skip:]:
-            con.executescript(sql)
-            counter += 1
+            try:
+                con.executescript(sql)
+                __add_migration(con, migration_number, description)
+                counter += 1
+            except Exception:
+                raise Exception(f"Failed to apply migration {migration_number}")
+                sys.exit(1)
 
-        print(f"Applied {counter} migrations. Went from version {migrations_to_skip} to {migration_number + counter - 1}")
+        print(f"Applied {counter} migrations. Went from version {migrations_to_skip} to {migrations_to_skip + counter}")
+
+
+def __add_migration(connection, migration_id, description):
+    insert_query = "INSERT INTO migrations (migration_id, description) VALUES (?, ?)"
+    result = connection.execute(insert_query, (migration_id, description))
+    rows_changed = result.rowcount
+    if rows_changed != 1:
+        print(f"Unexpected number of rows changed when adding migration. Changed {rows_changed} rows")
 
 
 def __migrations():
@@ -36,8 +49,7 @@ def __migrations():
             """
             CREATE TABLE migrations (
                 migration_id INTEGER PRIMARY KEY AUTOINCREMENT,
-                description TEXT NOT NULL,
-                sql TEXT NOT NULL
+                description TEXT NOT NULL
             );
             
             CREATE TABLE players (

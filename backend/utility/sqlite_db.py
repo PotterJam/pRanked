@@ -2,4 +2,4 @@ import sqlite3
 
 
 def connection():
-    return sqlite3.connect(":memory:")
+    return sqlite3.connect("./db.sqlite")
