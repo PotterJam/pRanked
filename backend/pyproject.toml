@@ -1,5 +1,5 @@
 [tool.poetry]
-name = "simplelocalranking"
+name = "pranking"
 version = "0.1.0"
 description = ""
 authors = ["James Potter <jamesrpotter1@gmail.com>"]
