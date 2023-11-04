@@ -1,5 +1,6 @@
 <script lang="ts">
 	import check from '$lib/assets/check-lg.svg';
+	import resetArrow from '$lib/assets/arrow-counterclockwise.svg';
 	import Spinny from './spinny.svelte';
 
 	import { fade, slide, scale } from 'svelte/transition';
@@ -80,12 +81,18 @@
 		>
 
 		<div class="mb-5 text-center flex flex-col justify-center">
-			<div class="flex flex-row flex-wrap justify-center">
-				<button class="btn text-xl bg-stone-100 w-32 h-12 mb-0 mx-3 mt-2" on:click={wasDraw}>
+			<div class="flex items-center justify-center">
+				<div class="flex-1"></div>
+				<button class="flex-1 btn text-xl bg-stone-100 w-32 h-12 mb-0 mx-3 mt-2" on:click={wasDraw}>
 					Draw</button
 				>
+				<button class="flex-1 self-end" on:click={again}>
+					<img class="float-right h-7 w-7 mr-2 mb-1" src={resetArrow} alt="Reset icon" />
+				</button>
 			</div>
 		</div>
+
+		
 	{/if}
 </div>
 
