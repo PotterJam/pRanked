@@ -1,0 +1,16 @@
+# Test your FastAPI endpoints
+
+POST http://127.0.0.1:8000/games/submit
+Content-Type: application/json
+
+{
+    "winner_id": 2,
+    "loser_id": 1
+}
+
+###
+
+GET http://127.0.0.1:8000/games/3
+Accept: application/json
+
+
