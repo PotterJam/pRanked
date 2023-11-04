@@ -2,7 +2,7 @@
 <project version="4">
   <component name="ProjectModuleManager">
     <modules>
-      <module fileurl="file://$PROJECT_DIR$/.idea/simpleLocalRanking.iml" filepath="$PROJECT_DIR$/.idea/simpleLocalRanking.iml" />
+      <module fileurl="file://$PROJECT_DIR$/.idea/pRanked.iml" filepath="$PROJECT_DIR$/.idea/pRanked.iml" />
     </modules>
   </component>
 </project>

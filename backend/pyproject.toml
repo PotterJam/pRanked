@@ -1,5 +1,5 @@
 [tool.poetry]
-name = "pranking"
+name = "p-ranked"
 version = "0.1.0"
 description = ""
 authors = ["James Potter <jamesrpotter1@gmail.com>"]
