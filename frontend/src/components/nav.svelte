@@ -16,7 +16,7 @@
             <img src={graph} class="h-12 w-12" alt="Graph icon" />
         </button>
     </a>
-    <a href="/configure" class="flex justify-center navbut mr-5 sm:mr-10">
+    <a href="/configure" class="flex justify-center navbut">
         <button on:click={() => {}}>
             <img src={cog} class="h-12 w-12" alt="Settings icon" />
         </button>
