@@ -6,18 +6,21 @@
 </script>
 
 <div class="flex flex-row justify-center h-20 w-auto">
-    <button class="navbut mr-5 sm:mr-10"
-    on:click={() => {}}>
-        <img src={leaderboard} class="m-auto h-12 w-12" alt="Leaderboard icon" />
-    </button>
-    <button class="navbut mr-5 sm:mr-10"
-    on:click={() => {}}>
-        <img src={graph} class="m-auto h-12 w-12" alt="Graph icon" />
-    </button>
-    <button class="navbut"
-            on:click={() => {}}>
-        <img src={cog} class="m-auto h-12 w-12" alt="Settings icon" />
-    </button>
+    <a href="/" class="flex justify-center navbut mr-5 sm:mr-10">
+        <button on:click={() => {}}>
+            <img src={leaderboard} class="h-12 w-12" alt="Leaderboard icon" />
+        </button>
+    </a>
+    <a href="/graphs" class="flex justify-center navbut mr-5 sm:mr-10">
+        <button on:click={() => {}}>
+            <img src={graph} class="h-12 w-12" alt="Graph icon" />
+        </button>
+    </a>
+    <a href="/configure" class="flex justify-center navbut mr-5 sm:mr-10">
+        <button on:click={() => {}}>
+            <img src={cog} class="h-12 w-12" alt="Settings icon" />
+        </button>
+    </a>
 </div>
 
 

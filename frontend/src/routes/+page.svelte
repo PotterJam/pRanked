@@ -1,10 +1,1 @@
-<script>
-	import Nav from "../components/nav.svelte";
-	import Settings from "../components/settings.svelte";
-
-</script>
-
-
-<Nav />
-
-<Settings />
+<div class="text-center  p-10 text-3xl font-bold">The leaderboard will be here eventually.</div>

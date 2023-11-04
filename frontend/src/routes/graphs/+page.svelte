@@ -1,0 +1,1 @@
+<div class="text-center  p-10 text-3xl font-bold">Graphs will be here eventually.</div>
