@@ -68,6 +68,7 @@ def __migrations():
             
             CREATE TABLE games (
                 game_id INTEGER PRIMARY KEY AUTOINCREMENT,
+                draw BOOLEAN DEFAULT FALSE,
                 rating_period_id INTEGER NOT NULL,
                 date_played TEXT DEFAULT CURRENT_TIMESTAMP,
                 winner_id INTEGER NOT NULL,

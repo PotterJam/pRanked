@@ -11,25 +11,27 @@ router = APIRouter(prefix='/games')
 @router.get("/{game_id}")
 async def get_game(game_id: int):
     with sqlite_db.connection() as con:
-        result = con.execute("SELECT game_id, winner_id, loser_id, winner_rating, loser_rating, winner_rating_deviation, loser_rating_deviation, rating_period_id FROM games WHERE game_id = ?", [game_id])
+        result = con.execute("SELECT game_id, draw, winner_id, loser_id, winner_rating, loser_rating, winner_rating_deviation, loser_rating_deviation, rating_period_id FROM games WHERE game_id = ?", [game_id])
         row = result.fetchone()
         if row is None:
             raise HTTPException(status_code=404, detail="Game not found")
         return {
             "game_id": row[0],
-            "winner_id": row[1],
-            "loser_id": row[2],
-            "winner_rating": row[3],
-            "loser_rating": row[4],
-            "winner_rating_deviation": row[5],
-            "loser_rating_deviation": row[6],
-            "rating_period_id": row[7],
+            "draw": row[1],
+            "winner_id": row[2],
+            "loser_id": row[3],
+            "winner_rating": row[4],
+            "loser_rating": row[5],
+            "winner_rating_deviation": row[6],
+            "loser_rating_deviation": row[7],
+            "rating_period_id": row[8],
         }
 
 
 class SubmitGameRequest(BaseModel):
     winner_id: int
     loser_id: int
+    draw: bool = False
 
 
 @router.post("/submit")
@@ -52,8 +54,8 @@ async def submit_game(submit_game_request: SubmitGameRequest):
 
         # Get id of inserted game
         game_insert_result = con.execute(
-            "INSERT INTO games (winner_id, loser_id, winner_rating, loser_rating, winner_rating_deviation, loser_rating_deviation, rating_period_id) VALUES (?, ?, ?, ?, ?, ?, ?)",
-            [submit_game_request.winner_id, submit_game_request.loser_id, winner_rating, loser_rating, winner_rating_deviation, loser_rating_deviation, rating_period_id])
+            "INSERT INTO games (draw, winner_id, loser_id, winner_rating, loser_rating, winner_rating_deviation, loser_rating_deviation, rating_period_id) VALUES (?, ?, ?, ?, ?, ?, ?, ?)",
+            [submit_game_request.draw, submit_game_request.winner_id, submit_game_request.loser_id, winner_rating, loser_rating, winner_rating_deviation, loser_rating_deviation, rating_period_id])
 
         # Make sure only one row was inserted
         rows_changed = game_insert_result.rowcount
