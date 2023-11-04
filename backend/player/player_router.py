@@ -8,19 +8,23 @@ from utility import sqlite_db
 router = APIRouter(prefix='/player')
 
 
-@router.get("/{username}")
-async def get_player(username: str):
+@router.get("/")
+async def get_players():
     with sqlite_db.connection() as con:
-        result = con.execute("SELECT player_id, username, current_rating, current_rating_deviation FROM players WHERE username = ?", [username])
-        row = result.fetchone()
-        if row is None:
-            raise HTTPException(status_code=404, detail="Player not found")
-        return {
-            "player_id": row[0],
-            "username": row[1],
-            "rating": row[2],
-            "rating_deviation": rating_deviation_default,
-        }
+        result = con.execute("SELECT player_id, username, current_rating, current_rating_deviation FROM players")
+        rows = result.fetchall()
+        if rows is None:
+            raise HTTPException(status_code=404, detail="Players not found")
+
+        def get_response_from_row(row):
+            return {
+                "player_id": row[0],
+                "username": row[1],
+                "rating": row[2],
+                "rating_deviation": rating_deviation_default,
+            }
+
+        return [get_response_from_row(row) for row in rows]
 
 
 @router.put("/{username}")
