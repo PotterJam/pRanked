@@ -2,6 +2,30 @@
 @tailwind components;
 @tailwind utilities;
 
+textarea {
+    /* reset */
+    margin: 0;
+    -webkit-box-sizing: border-box;
+    -moz-box-sizing: border-box;
+    box-sizing: border-box;
+    -webkit-appearance: none;
+    -moz-appearance: none;
+
+    padding: 0.7em;
+    border: thin solid gray;
+    border-radius: 4px;
+
+    background-color: white;
+
+    font: inherit;
+    line-height: 1.5em;
+    color: black;
+
+    outline: 0;
+    resize: none;
+    height: 3rem;
+}
+
 select {
     /* reset */
     margin: 0;

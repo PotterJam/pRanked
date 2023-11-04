@@ -39,8 +39,17 @@
 		selectedPlayer2 = '';
 		draw = false;
 	};
+
+	let headerText = 'Record a game';
+
+	$: if (selectedPlayer1 != '' && selectedPlayer2 != '' && !onSubmit) {
+		headerText = "Who's won?";
+	} else {
+		headerText = 'Record a game';
+	}
 </script>
 
+<div class="text-center pt-14 px-2 text-3xl font-bold pb-3">{headerText}</div>
 <div class="flex flex-col w-auto justify-end p-1">
 	{#if complete}
 		<div class="p-10 flex pb-7" in:scale>
@@ -54,28 +63,26 @@
 	{:else if onSubmit}
 		<div class="p-10 flex" in:fade><Spinny /></div>
 	{:else if selectedPlayer1 == '' || selectedPlayer2 == ''}
-		<div class="w-12 h-16 p-5 pt-3"></div>
 		<select in:slide bind:value={selectedPlayer1}>
 			<option value="" disabled selected hidden>Choose player 1...</option>
-			<option value="volvo">Volvo</option>
+			<option value="Edward">Edward</option>
+			<option value="Michael">Michael</option>
 		</select>
 		<select in:slide bind:value={selectedPlayer2}>
 			<option value="" disabled selected hidden>Choose player 2...</option>
-			<option value="busa">Busa</option>
+			<option value="Michael">Michael</option>
 		</select>
 	{:else}
-		<div class="text-center text-2xl pb-1 pt-5 font-medium">Who won?</div>
-		<button in:fade class="btn bg-cyan-50 text-xl w-60 h-14 m-3" on:click={topWon}
-			>{selectedPlayer1}</button
+		<button class="btn bg-cyan-50 text-xl w-60 h-12 m-2" on:click={topWon}>{selectedPlayer1}</button
 		>
-		<button in:fade class="btn bg-cyan-50 text-xl w-60 h-14 m-3 mt-2" on:click={bottomWon}
+		<button class="btn bg-cyan-50 text-xl w-60 h-12 m-2 mt-2" on:click={bottomWon}
 			>{selectedPlayer2}</button
 		>
 
 		<div class="mb-5 text-center flex flex-col justify-center">
 			<div class="flex flex-row flex-wrap justify-center">
-				<button class="btn text-xl bg-stone-100 w-32 h-12 mb-0 mx-3 mt-2" on:click={wasDraw}
-					>Draw</button
+				<button class="btn text-xl bg-stone-100 w-32 h-12 mb-0 mx-3 mt-2" on:click={wasDraw}>
+					Draw</button
 				>
 			</div>
 		</div>
