@@ -1,33 +1,64 @@
 <script lang="ts">
-	import { slide } from 'svelte/transition';
+	import check from '$lib/assets/check-lg.svg'
+	import Spinny from './spinny.svelte';
 
-    export let player1Label: string;
-    export let player2Label: string;
-    export let submitGame: (player1: string, player2: string) => number;
+	import { fade, slide, scale } from 'svelte/transition';
+
+	let onSubmit = false;
+	let complete = false;
+
+    let submitGame: (winner: string, loser: string, draw: boolean) => number = () => {
+        onSubmit = true;
+        setTimeout(() => {
+            complete = true;
+        }, 2000);
+		return 1;
+	};
 
 	let selectedPlayer1 = '';
 	let selectedPlayer2 = '';
+	let draw = false;
+
+
+	const topWon = () => {
+		submitGame(selectedPlayer1, selectedPlayer2, draw);
+	};
+
+	const bottomWon = () => {
+		submitGame(selectedPlayer2, selectedPlayer1, draw);
+	};
+
+	const wasDraw = () => {
+		draw = true;
+		submitGame(selectedPlayer1, selectedPlayer2, draw);
+	};
+
 </script>
 
-<div class="flex flex-col w-auto justify-end">
-	<div class="text-center" transition:slide>
-		<label class="inline-block w-20 text-lg font-bold" for="{player1Label}">{player1Label}</label>
-		<select class="" id="{player1Label}" name="{player1Label}" bind:value={selectedPlayer1}>
-			<option value="volvo">Volvo</option>
-		</select>
-	</div>
-	{#if selectedPlayer1 != ''}
-		<div class="text-center" transition:slide>
-			<label class="inline-block w-20 text-lg font-bold" for="{player2Label}">{player2Label}</label>
-			<select class="" id="{player2Label}" name="{player2Label}" bind:value={selectedPlayer2}>
-				<option value="saab">Saaaaab</option>
-			</select>
-		</div>
-	{/if}
-	{#if selectedPlayer2 != ''}
-		<div class="text-center" transition:slide>
-			<button class="btn ml-auto bg-green-300 w-42 h-14 m-5 mt-3" on:click={submitGame(selectedPlayer1, selectedPlayer2)}>Submit</button>
-		</div>
+<div class="flex flex-col w-auto justify-end p-5">
+	{#if complete}
+	<div class="p-10 flex" in:scale><img src={check} class="m-auto h-12 w-12" alt="Check mark" /></div>
+	{:else if onSubmit}
+		<div class="p-10 flex" in:fade><Spinny /></div>
+	{:else if selectedPlayer1 == '' || selectedPlayer2 == ''}
+	<select in:slide bind:value={selectedPlayer1}>
+		<option value="" disabled selected hidden>Choose player 1...</option>
+		<option value="volvo">Volvo</option>
+	</select>
+	<select in:slide bind:value={selectedPlayer2}>
+		<option value="" disabled selected hidden>Choose player 2...</option>
+		<option value="busa">Busa</option>
+	</select>
+	{:else}
+		<div class="text-center text-2xl p-5 pt-3 font-medium">Pick the winner</div>
+		<button in:slide class="btn bg-emerald-400 text-xl w-60 h-14 m-3" on:click={topWon}>{selectedPlayer1}</button>
+		<button in:slide class="btn bg-emerald-300 text-xl w-60 h-14 m-3 mt-2" on:click={bottomWon}>{selectedPlayer2}</button>
+
+		<div class="mb-5 text-center flex flex-col justify-center">
+			<div class="flex flex-row flex-wrap justify-center">
+				<button class="btn text-xl bg-stone-100 w-32 h-12 mb-0 mx-3 mt-2" on:click={wasDraw}>Draw</button>
+			</div>
+		</div>	
 	{/if}
 </div>
 

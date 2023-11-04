@@ -10,7 +10,7 @@
   }
 
   :global(.btn) {
-    @apply text-black font-bold py-2 px-4 rounded cursor-pointer border border-black;
+    @apply text-black font-medium py-2 px-4 rounded cursor-pointer border border-black;
   }
 
 </style>
