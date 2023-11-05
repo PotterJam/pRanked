@@ -4,13 +4,13 @@ POST http://127.0.0.1:8000/games/submit
 Content-Type: application/json
 
 {
-    "winner_id": 2,
-    "loser_id": 1
+    "winner_id": 1,
+    "loser_id": 3
 }
 
 ###
 
-GET http://127.0.0.1:8000/games/3
+GET http://127.0.0.1:8000/games
 Accept: application/json
 
 

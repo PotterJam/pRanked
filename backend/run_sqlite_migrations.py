@@ -59,17 +59,9 @@ def __migrations():
                 current_rating_deviation REAL DEFAULT 350 NOT NULL
             );
             
-            CREATE TABLE rating_period (
-                rating_period_id INTEGER PRIMARY KEY AUTOINCREMENT,
-                total_games_played INTEGER DEFAULT NULL,
-                started TEXT DEFAULT CURRENT_TIMESTAMP NOT NULL,
-                ended TEXT DEFAULT NULL
-            );
-            
             CREATE TABLE games (
                 game_id INTEGER PRIMARY KEY AUTOINCREMENT,
                 draw BOOLEAN DEFAULT FALSE,
-                rating_period_id INTEGER NOT NULL,
                 date_played TEXT DEFAULT CURRENT_TIMESTAMP,
                 winner_id INTEGER NOT NULL,
                 loser_id INTEGER NOT NULL,
@@ -77,21 +69,18 @@ def __migrations():
                 loser_rating REAL NOT NULL,
                 winner_rating_deviation REAL NOT NULL,
                 loser_rating_deviation REAL NOT NULL,
-                FOREIGN KEY (rating_period_id) REFERENCES rating_period(rating_period_id),
                 FOREIGN KEY (winner_id) REFERENCES players(player_id),
                 FOREIGN KEY (loser_id) REFERENCES players(player_id)
             );
 
             CREATE TABLE players_rating_history (
-                rating_period_id INTEGER NOT NULL,
                 player_id INTEGER NOT NULL,
                 rating REAL NOT NULL,
                 rating_deviation REAL NOT NULL,
-                FOREIGN KEY (rating_period_id) REFERENCES rating_period(rating_period_id),
                 FOREIGN KEY (player_id) REFERENCES players(player_id)
             );
             
-            CREATE INDEX idx_games ON players_rating_history(player_id, rating_period_id);
+            CREATE INDEX idx_games ON players_rating_history(player_id);
             """
         )
     ]

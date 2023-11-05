@@ -21,7 +21,7 @@ async def get_players():
                 "player_id": row[0],
                 "username": row[1],
                 "rating": row[2],
-                "rating_deviation": rating_deviation_default,
+                "rating_deviation": row[3],
             }
 
         return [get_response_from_row(row) for row in rows]
