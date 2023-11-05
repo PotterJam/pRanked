@@ -2,6 +2,8 @@ from utility import sqlite_db
 
 
 def main():
+    print("Running sqlite migrations")
+
     with sqlite_db.connection() as con:
         migrations_to_skip = 0
 

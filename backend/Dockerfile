@@ -16,7 +16,5 @@ COPY . /code/app/
 
 ENV PYTHONPATH "/code/app/"
 
-CMD ["python3", "app/run_sqlite_migrations.py"]
-
 # Digital ocean app services assume that the app is running on port 8080
 CMD ["uvicorn", "app.main:app", "--host", "0.0.0.0", "--port", "8080"]
