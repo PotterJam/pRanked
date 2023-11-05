@@ -56,7 +56,8 @@ def __migrations():
                 player_id INTEGER PRIMARY KEY AUTOINCREMENT,
                 username TEXT UNIQUE NOT NULL,
                 current_rating REAL DEFAULT 1500 NOT NULL,
-                current_rating_deviation REAL DEFAULT 350 NOT NULL
+                current_rating_deviation REAL DEFAULT 350 NOT NULL,
+                last_game_played TEXT DEFAULT NULL
             );
             
             CREATE TABLE games (

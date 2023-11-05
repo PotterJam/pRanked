@@ -126,7 +126,7 @@ class GlickoCalculatorTests(unittest.TestCase):
             (Outcome.WIN, Rating(2500, 56)),
         ]
 
-        rating = glicko.Calculator().score_games(initial_rating, games, periods_missed=10)
+        rating = glicko.Calculator().score_games(initial_rating, games, months_since_playing=10)
         self.assertGreater(rating.deviation, initial_rating.deviation)
 
 

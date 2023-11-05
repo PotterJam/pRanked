@@ -1,3 +1,6 @@
+from datetime import datetime
+
+from dateutil.relativedelta import relativedelta
 from fastapi import APIRouter, HTTPException
 from pydantic import BaseModel
 
@@ -47,14 +50,15 @@ class SubmitGameRequest(BaseModel):
     draw: bool = False
 
 
+# TODO: extract this into a service so I can test it properly
 @router.post("/submit")
 async def submit_game(submit_game_request: SubmitGameRequest):
     with sqlite_db.connection() as con:
         # Get the winner_rating, loser_rating, winner_rating_deviation, loser_rating_deviation from the players table for both players
-        winner_result = con.execute("SELECT current_rating, current_rating_deviation FROM players WHERE player_id = ?", [submit_game_request.winner_id])
-        loser_result = con.execute("SELECT current_rating, current_rating_deviation FROM players WHERE player_id = ?", [submit_game_request.loser_id])
-        winner_rating, winner_rating_deviation = winner_result.fetchone()
-        loser_rating, loser_rating_deviation = loser_result.fetchone()
+        winner_result = con.execute("SELECT current_rating, current_rating_deviation, last_game_played FROM players WHERE player_id = ?", [submit_game_request.winner_id])
+        loser_result = con.execute("SELECT current_rating, current_rating_deviation, last_game_played FROM players WHERE player_id = ?", [submit_game_request.loser_id])
+        winner_rating, winner_rating_deviation, winner_last_played = winner_result.fetchone()
+        loser_rating, loser_rating_deviation, loser_last_played = loser_result.fetchone()
 
         # Make sure the winner and loser exist
         if winner_rating is None or winner_rating_deviation is None:
@@ -62,17 +66,34 @@ async def submit_game(submit_game_request: SubmitGameRequest):
         if loser_rating is None or loser_rating_deviation is None:
             raise HTTPException(status_code=404, detail="Player with that loser id doesn't exist")
 
+        # TODO: another thing to extract that'll be nice in a player service
+        # Calculate number of months since the winner and loser last played a game
+        def get_months_since_playing(last_played: str | None):
+            if last_played is None:
+                # Doesn't matter if they haven't played a game yet
+                return 0
+
+            delta = relativedelta(datetime.now(), datetime.fromisoformat(last_played))
+            return delta.months + (delta.years * 12)
+
+        winner_months_away = get_months_since_playing(winner_last_played)
+        loser_months_away = get_months_since_playing(loser_last_played)
+
         # Update the winner and loser ratings using glicko
         new_winner_rating = glicko.Calculator().score_games(
             Rating(winner_rating, winner_rating_deviation),
-            [(Outcome.WIN, Rating(loser_rating, loser_rating_deviation))])
+            [(Outcome.WIN, Rating(loser_rating, loser_rating_deviation))],
+            months_since_playing=winner_months_away)
         new_loser_rating = glicko.Calculator().score_games(
             Rating(loser_rating, loser_rating_deviation),
-            [(Outcome.LOSS, Rating(winner_rating, winner_rating_deviation))])
+            [(Outcome.LOSS, Rating(winner_rating, winner_rating_deviation))],
+            months_since_playing=loser_months_away)
 
         # Update the winner and loser ratings in the players table
-        con.execute("UPDATE players SET current_rating = ?, current_rating_deviation = ? WHERE player_id = ?", [new_winner_rating.value, new_winner_rating.deviation, submit_game_request.winner_id])
-        con.execute("UPDATE players SET current_rating = ?, current_rating_deviation = ? WHERE player_id = ?", [new_loser_rating.value, new_loser_rating.deviation, submit_game_request.loser_id])
+        con.execute("UPDATE players SET current_rating = ?, current_rating_deviation = ?, last_game_played = CURRENT_TIMESTAMP WHERE player_id = ?",
+                    [new_winner_rating.value, new_winner_rating.deviation, submit_game_request.winner_id])
+        con.execute("UPDATE players SET current_rating = ?, current_rating_deviation = ?, last_game_played = CURRENT_TIMESTAMP WHERE player_id = ?",
+                    [new_loser_rating.value, new_loser_rating.deviation, submit_game_request.loser_id])
 
         # Add the rating changes into the players_rating_history table
         con.execute(

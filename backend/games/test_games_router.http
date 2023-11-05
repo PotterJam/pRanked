@@ -5,7 +5,7 @@ Content-Type: application/json
 
 {
     "winner_id": 1,
-    "loser_id": 3
+    "loser_id": 2
 }
 
 ###
