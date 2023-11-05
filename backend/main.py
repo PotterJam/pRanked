@@ -7,7 +7,11 @@ from player import player_router
 app = FastAPI()
 
 origins = [
-    "http://localhost:5173",
+    '*',
+
+    # If this becomes a problem we can restrict it to the actual domains
+    # "http://localhost:5173",
+    # "https://p-ranking.com",
 ]
 
 app.add_middleware(
