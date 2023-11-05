@@ -5,7 +5,7 @@ from fastapi import APIRouter, HTTPException
 from ranking.consts import rating_deviation_default, rating_default
 from utility import sqlite_db
 
-router = APIRouter(prefix='/player')
+router = APIRouter(prefix='/players')
 
 
 @router.get("/")

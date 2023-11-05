@@ -56,13 +56,9 @@
 		<div class="p-10 flex pb-7" in:scale>
 			<img src={check} class="m-auto h-26 w-12" alt="Check mark" />
 		</div>
-		<button
-			in:slide={{ delay: 700 }}
-			class="btn text-xl bg-stone-100 w-32 h-12 mb-0 mx-3 mt-2"
-			on:click={again}>Again?</button
-		>
+		<button in:slide={{ delay: 700 }} class="btn text-xl bg-stone-100 w-32 h-12 mb-0 mx-3 mt-2" on:click={again}> Again? </button>
 	{:else if onSubmit}
-		<div class="p-10 flex" in:fade><Spinny /></div>
+		<div class="p-10 flex" in:fade={{ delay: 700 }}><Spinny /></div>
 	{:else if selectedPlayer1 == '' || selectedPlayer2 == ''}
 		<select in:slide bind:value={selectedPlayer1}>
 			<option value="" disabled selected hidden>Choose player 1...</option>
@@ -74,25 +70,18 @@
 			<option value="Michael">Michael</option>
 		</select>
 	{:else}
-		<button class="btn bg-cyan-50 text-xl w-60 h-12 m-2" on:click={topWon}>{selectedPlayer1}</button
-		>
-		<button class="btn bg-cyan-50 text-xl w-60 h-12 m-2 mt-2" on:click={bottomWon}
-			>{selectedPlayer2}</button
-		>
+		<button class="btn bg-cyan-50 text-xl w-60 h-12 m-2" on:click={topWon}>{selectedPlayer1}</button>
+		<button class="btn bg-cyan-50 text-xl w-60 h-12 m-2 mt-2" on:click={bottomWon}>{selectedPlayer2}</button>
 
 		<div class="mb-5 text-center flex flex-col justify-center">
 			<div class="flex items-center justify-center">
-				<div class="flex-1"></div>
-				<button class="flex-1 btn text-xl bg-stone-100 w-32 h-12 mb-0 mx-3 mt-2" on:click={wasDraw}>
-					Draw</button
-				>
+				<div class="flex-1" />
+				<button class="flex-1 btn text-xl bg-stone-100 w-32 h-12 mb-0 mx-3 mt-2" on:click={wasDraw}> Draw</button>
 				<button class="flex-1 self-end" on:click={again}>
 					<img class="float-right h-7 w-7 mr-2 mb-1" src={resetArrow} alt="Reset icon" />
 				</button>
 			</div>
 		</div>
-
-		
 	{/if}
 </div>
 
