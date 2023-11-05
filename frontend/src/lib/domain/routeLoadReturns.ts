@@ -6,3 +6,8 @@ export interface ConfigureLoadData {
     players: Player[]
     games: Game[]
 }
+
+
+export interface ConfigureLeaderboardData {
+    players: Player[]
+}
