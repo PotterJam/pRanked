@@ -1,12 +1,12 @@
 <script lang="ts">
-    import { GetPlayerFromReponse, type Player, type PlayerResponse } from '$lib/domain/player/player';
+    import { getPlayerFromReponse, type Player, type PlayerResponse } from '$lib/domain/player/player';
 
     import httpClient, { isAxiosError } from '$lib/httpClient';
 
     import redx from '$lib/assets/red-x.svg';
     import greenCheck from '$lib/assets/green-check.svg';
 
-    export let playerNames = new Set<string>();
+    export let playerNames: string[] = [];
     export let players: Player[] = [];
     
     let newPlayerName = '';
@@ -25,10 +25,10 @@
             }, 1000);
         };
 
-        if (newPlayerName.length > 1 && !playerNames.has(newPlayerName)) {
+        if (newPlayerName.length > 1 && !playerNames.includes(newPlayerName)) {
             try {
                 const res = await httpClient.put<PlayerResponse>('/players/' + newPlayerName);
-                const newPlayer = GetPlayerFromReponse(res.data);
+                const newPlayer = getPlayerFromReponse(res.data);
                 
                 addPlayerDisabled = true;
                 addPlayerSuccess = true;

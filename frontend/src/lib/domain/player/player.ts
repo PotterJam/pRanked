@@ -12,7 +12,7 @@ export interface Player {
     ratingDeviation: number;
 }
 
-export const GetPlayerFromReponse = (response: PlayerResponse): Player => ({
+export const getPlayerFromReponse = (response: PlayerResponse): Player => ({
     playerId: response.player_id,
     username: response.username,
     rating: response.rating,

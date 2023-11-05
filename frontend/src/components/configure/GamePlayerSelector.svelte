@@ -4,18 +4,51 @@
 	import resetArrow from '$lib/assets/arrow-counterclockwise.svg';
 	import Spinny from '../spinny.svelte';
 	import type { Player } from '$lib/domain/player/player';
+	import { getGameResultFromResponse, type Game } from '$lib/domain/games/games';
+	import httpClient from '$lib/httpClient';
 
 	export let players: Player[] = [];
+	export let playerNames: string[] = [];
+	export let games: Game[] = [];
 
 	let onSubmit = false;
 	let complete = false;
 
-	let submitGame: (winner: string, loser: string, draw: boolean) => number = () => {
+	let submitGame = async (winner: string, loser: string, draw: boolean) => {
+		const winningPlayer = players.find(x => x.username === winner);
+		const losingPlayer = players.find(x => x.username === loser);
+
+		if (!winningPlayer || !losingPlayer) {
+			throw new Error('Could not find players that you selected');
+		}
+
 		onSubmit = true;
-		setTimeout(() => {
-			complete = true;
-		}, 2000);
-		return 1;
+		const submitGameResp = await httpClient.post('/games/submit', {
+			winner_id: winningPlayer.playerId,
+			loser_id: losingPlayer.playerId,
+			draw: draw
+		}, {
+			headers: {
+				'Content-Type': 'application/json'
+			}
+		});
+
+		const newGameResult = getGameResultFromResponse(submitGameResp.data);
+
+		const newGame: Game = {
+			gameId: newGameResult.gameId,
+			draw: draw,
+			winnerId: winningPlayer.playerId,
+			winnerUsername: winningPlayer.username,
+			winnerRating: newGameResult.oldWinnerRating,
+			loserId: losingPlayer.playerId,
+			loserUsername: losingPlayer.username,
+			loserRating: newGameResult.oldLoserRating,
+		};
+
+		games = [...games, newGame];
+
+		complete = true;
 	};
 
 	let selectedPlayer1 = '';
@@ -64,14 +97,14 @@
 	{:else if selectedPlayer1 == '' || selectedPlayer2 == ''}
 		<select in:slide bind:value={selectedPlayer1}>
 			<option value="" disabled selected hidden>Choose player 1...</option>
-			{#each players as player}
-				<option value={player.username}>{player.username}</option>
+			{#each playerNames as playerName}
+				<option value={playerName}>{playerName}</option>
 			{/each}
 		</select>
 		<select in:slide bind:value={selectedPlayer2}>
 			<option value="" disabled selected hidden>Choose player 2...</option>
-			{#each players.filter(x => x.username != selectedPlayer1) as player}
-				<option value={player.username}>{player.username}</option>
+			{#each playerNames.filter(name => name != selectedPlayer1) as playerName}
+				<option value={playerName}>{playerName}</option>
 			{/each}
 		</select>
 	{:else}
