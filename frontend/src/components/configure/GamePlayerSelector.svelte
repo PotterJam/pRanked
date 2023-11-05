@@ -1,9 +1,11 @@
 <script lang="ts">
+	import { fade, slide, scale } from 'svelte/transition';
 	import check from '$lib/assets/check-lg.svg';
 	import resetArrow from '$lib/assets/arrow-counterclockwise.svg';
-	import Spinny from './spinny.svelte';
+	import Spinny from '../spinny.svelte';
+	import type { Player } from '$lib/domain/player/player';
 
-	import { fade, slide, scale } from 'svelte/transition';
+	export let players: Player[] = [];
 
 	let onSubmit = false;
 	let complete = false;
@@ -62,12 +64,15 @@
 	{:else if selectedPlayer1 == '' || selectedPlayer2 == ''}
 		<select in:slide bind:value={selectedPlayer1}>
 			<option value="" disabled selected hidden>Choose player 1...</option>
-			<option value="Edward">Edward</option>
-			<option value="Michael">Michael</option>
+			{#each players as player}
+				<option value={player.username}>{player.username}</option>
+			{/each}
 		</select>
 		<select in:slide bind:value={selectedPlayer2}>
 			<option value="" disabled selected hidden>Choose player 2...</option>
-			<option value="Michael">Michael</option>
+			{#each players.filter(x => x.username != selectedPlayer1) as player}
+				<option value={player.username}>{player.username}</option>
+			{/each}
 		</select>
 	{:else}
 		<button class="btn bg-cyan-50 text-xl w-60 h-12 m-2" on:click={topWon}>{selectedPlayer1}</button>
