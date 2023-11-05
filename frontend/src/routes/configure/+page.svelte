@@ -15,7 +15,7 @@
 <div class="flex flex-col items-center justify-center h-auto w-auto pt-10 pb-20 px-2">
 	<AddPlayer playerNames={playerNames} bind:players={players}/>
 
-	<GameSubmitter playerNames={playerNames} players={players} bind:games={games}/>
+	<GameSubmitter players={players} bind:games={games}/>
 
 	<div class="m-5 mt-10">
 		{JSON.stringify(games)}

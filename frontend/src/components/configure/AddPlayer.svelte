@@ -5,6 +5,7 @@
 
     import redx from '$lib/assets/red-x.svg';
     import greenCheck from '$lib/assets/green-check.svg';
+    import { Input, Button } from 'flowbite-svelte'
 
     export let playerNames: string[] = [];
     export let players: Player[] = [];
@@ -53,17 +54,17 @@
 </script>
 
 <div class="text-center pt-7 pb-5 px-2 text-3xl font-bold">Add player</div>
-<div class="flex">
-    <textarea disabled={addPlayerDisabled} bind:value={newPlayerName} />
+<div class="flex h-10">
+    <Input disabled={addPlayerDisabled} placeholder="Player name..." rows="1" bind:value={newPlayerName} />
     {#if !addPlayerFailed && !addPlayerFailed && !addPlayerDisabled}
-        <button on:click={addPlayer} class="h-12 w-16 btn bg-white ml-2">Add</button>
+        <Button color="light" on:click={addPlayer} class="ml-2">Add</Button>
     {:else}
-        <div class="flex items-center justify-center h-12 w-18 mx-4">
-            {#if addPlayerFailed}
-                <img src={redx} class="h-10 w-10" alt="Cross icon" />
-            {:else if addPlayerSuccess}
-                <img src={greenCheck} class="h-10 w-10" alt="Check mark" />
-            {/if}
-        </div>
+    <div class="flex justify-center h-10 w-16 mx-4 ml-5">
+        {#if addPlayerFailed}
+            <img src={redx} class="h-10 w-10" alt="Cross icon" />
+        {:else if addPlayerSuccess}
+            <img src={greenCheck} class="h-10 w-10" alt="Check mark" />
+        {/if}
+    </div>
     {/if}
 </div>
