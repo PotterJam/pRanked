@@ -15,7 +15,7 @@ router = APIRouter(prefix='/games')
 @router.get("/")
 async def get_games():
     with sqlite_db.connection() as con:
-        game_result = con.execute("SELECT game_id, draw, winner_id, loser_id, winner_rating, loser_rating FROM games")
+        game_result = con.execute("SELECT game_id, draw, winner_id, winner_rating, winner_rating_gained, loser_id, loser_rating, loser_rating_lost FROM games")
         game_rows = game_result.fetchall()
         if game_rows is None:
             raise HTTPException(status_code=404, detail="Games not found")
@@ -33,10 +33,12 @@ async def get_games():
                 "draw": row[1],
                 "winner_id": row[2],
                 "winner_username": players[row[2]],
-                "loser_id": row[3],
-                "loser_username": players[row[3]],
-                "winner_rating": row[4],
-                "loser_rating": row[5],
+                "winner_rating": row[3],
+                "winner_rating_gained": row[4],
+                "loser_id": row[5],
+                "loser_username": players[row[5]],
+                "loser_rating": row[6],
+                "loser_rating_lost": row[7],
             }
 
         return [row_to_response(row) for row in game_rows]
@@ -101,10 +103,23 @@ async def submit_game(submit_game_request: SubmitGameRequest):
             "INSERT INTO players_rating_history (player_id, rating, rating_deviation) VALUES (?, ?, ?)",
             [submit_game_request.loser_id, new_loser_rating.value, new_loser_rating.deviation])
 
+        winner_rating_gained = new_winner_rating.value - winner_rating
+        loser_rating_lost = loser_rating - new_loser_rating.value
+
         # Get id of inserted game
         game_insert_result = con.execute(
-            "INSERT INTO games (draw, winner_id, loser_id, winner_rating, loser_rating, winner_rating_deviation, loser_rating_deviation) VALUES (?, ?, ?, ?, ?, ?, ?)",
-            [submit_game_request.draw, submit_game_request.winner_id, submit_game_request.loser_id, winner_rating, loser_rating, winner_rating_deviation, loser_rating_deviation])
+            "INSERT INTO games (draw, winner_id, winner_rating, winner_rating_gained, winner_rating_deviation, loser_id, loser_rating, loser_rating_lost, loser_rating_deviation) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)",
+            [
+                submit_game_request.draw,
+                submit_game_request.winner_id,
+                winner_rating,
+                winner_rating_gained,
+                winner_rating_deviation,
+                submit_game_request.loser_id,
+                loser_rating,
+                loser_rating_lost,
+                loser_rating_deviation
+            ])
 
         game_id = game_insert_result.lastrowid
 
@@ -113,5 +128,7 @@ async def submit_game(submit_game_request: SubmitGameRequest):
             "old_loser_rating": loser_rating,
             "new_winner_rating": new_winner_rating,
             "new_loser_rating": new_loser_rating,
+            "winner_rating_gained": winner_rating_gained,
+            "loser_rating_lost": loser_rating_lost,
             "game_id": game_id
         }

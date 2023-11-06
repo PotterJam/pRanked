@@ -12,7 +12,7 @@ class Calculator:
         self.Q = math.log(10) / 400
 
     # implemented from http://www.glicko.net/glicko/glicko.pdf
-    def score_games(self, initial_rating: Rating, game_results_from_period: [(Outcome, Rating)], months_since_playing: Optional[int] = None) -> object:
+    def score_games(self, initial_rating: Rating, game_results_from_period: [(Outcome, Rating)], months_since_playing: Optional[int] = None) -> Rating:
         t = 1 if months_since_playing is None else months_since_playing + 1
         rating_deviation_for_period = min(int(math.sqrt((initial_rating.deviation ** 2) + (self.C ** 2) * t)), rating_deviation_default)
         rating_for_period = Rating(initial_rating.value, rating_deviation_for_period)

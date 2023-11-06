@@ -42,12 +42,14 @@
 			winnerId: winningPlayer.playerId,
 			winnerUsername: winningPlayer.username,
 			winnerRating: newGameResult.oldWinnerRating,
+			winnerRatingGained: newGameResult.winnerRatingGained,
 			loserId: losingPlayer.playerId,
 			loserUsername: losingPlayer.username,
 			loserRating: newGameResult.oldLoserRating,
+			loserRatingLost: newGameResult.loserRatingLost,
 		};
 
-		games = [...games, newGame];
+		games = [newGame, ...games];
 
 		complete = true;
 	};

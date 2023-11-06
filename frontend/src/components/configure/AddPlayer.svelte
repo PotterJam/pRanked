@@ -23,7 +23,7 @@
             setTimeout(() => {
                 addPlayerFailed = false;
                 addPlayerDisabled = false;
-            }, 1000);
+            }, 500);
         };
 
         if (newPlayerName.length > 1 && !playerNames.includes(newPlayerName)) {
@@ -40,7 +40,7 @@
                     addPlayerSuccess = false;
                     addPlayerDisabled = false;
                     newPlayerName = '';
-                }, 1000);
+                }, 500);
             } catch (error) {
                 if (isAxiosError<PlayerResponse>(error)) {
                     if (error.response?.status === 409) alert('Player already exists');

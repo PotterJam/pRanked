@@ -3,10 +3,12 @@ export interface GameResponse {
     draw: boolean;
     winner_id: number;
     winner_username: string;
+    winner_rating: number;
+    winner_rating_gained: number;
     loser_id: number;
     loser_username: string;
-    winner_rating: number;
     loser_rating: number;
+    loser_rating_lost: number;
 }
 
 export interface Game {
@@ -14,10 +16,12 @@ export interface Game {
     draw: boolean;
     winnerId: number;
     winnerUsername: string;
+    winnerRating: number;
+    winnerRatingGained: number;
     loserId: number;
     loserUsername: string;
-    winnerRating: number;
     loserRating: number;
+    loserRatingLost: number;
 }
 
 export const getGameFromReponse = (response: GameResponse): Game => ({
@@ -29,6 +33,8 @@ export const getGameFromReponse = (response: GameResponse): Game => ({
     loserUsername: response.loser_username,
     winnerRating: response.winner_rating,
     loserRating: response.loser_rating,
+    winnerRatingGained: response.winner_rating_gained,
+    loserRatingLost: response.loser_rating_lost,
 });
 
 export interface SubmitGameRequest {
@@ -43,6 +49,8 @@ export interface SubmitGameResponse {
     old_loser_rating: number;
     new_winner_rating: number;
     new_loser_rating: number;
+    winner_rating_gained: number;
+    loser_rating_lost: number;
 }
 
 export interface NewGameResult {
@@ -51,6 +59,8 @@ export interface NewGameResult {
     oldLoserRating: number;
     newWinnerRating: number;
     newLoserRating: number;
+    winnerRatingGained: number;
+    loserRatingLost: number;
 }
 
 export const getGameResultFromResponse = (response: SubmitGameResponse): NewGameResult => ({
@@ -59,4 +69,6 @@ export const getGameResultFromResponse = (response: SubmitGameResponse): NewGame
     oldLoserRating: response.old_loser_rating,
     newWinnerRating: response.new_winner_rating,
     newLoserRating: response.new_loser_rating,
+    winnerRatingGained: response.winner_rating_gained,
+    loserRatingLost: response.loser_rating_lost,
 });

@@ -19,22 +19,20 @@
 
 	<GameSubmitter players={players} bind:games={games}/>
 
-	<div class="m-5 mt-10">
+	<div class="m-3 mt-10">
 		<Table>
 			<TableHead>
+				<TableHeadCell>Game</TableHeadCell>
 				<TableHeadCell>Winner</TableHeadCell>
-				<TableHeadCell>Rating</TableHeadCell>
 				<TableHeadCell>Loser</TableHeadCell>
-				<TableHeadCell>Rating</TableHeadCell>
 				<TableHeadCell>Draw</TableHeadCell>
 			</TableHead>
 			<TableBody>
-				{#each games as game}
+				{#each games.sort(( a, b ) => b.gameId - a.gameId) as game}
 					<TableBodyRow>
-						<TableBodyCell>{game.winnerUsername}</TableBodyCell>
-						<TableBodyCell>{Math.floor(game.winnerRating)}</TableBodyCell>
-						<TableBodyCell>{game.loserUsername}</TableBodyCell>
-						<TableBodyCell>{Math.floor(game.loserRating)}</TableBodyCell>
+						<TableBodyCell>{game.gameId}</TableBodyCell>
+						<TableBodyCell>{game.winnerUsername} | {Math.floor(game.winnerRating)} (+{Math.floor(game.winnerRatingGained)})</TableBodyCell>
+						<TableBodyCell>{game.loserUsername} | {Math.floor(game.loserRating)} (-{Math.floor(game.loserRatingLost)})</TableBodyCell>
 						<TableBodyCell>{game.draw ? 'Yes' : ''}</TableBodyCell>
 					</TableBodyRow>
 				{/each}

@@ -16,7 +16,7 @@
         <TableBody>
             {#each players.sort((a, b) => b.rating - a.rating) as player, i}
                 <TableBodyRow>
-                    <TableBodyCell>{i}</TableBodyCell>
+                    <TableBodyCell>{i+1}</TableBodyCell>
                     <TableBodyCell>{player.username}</TableBodyCell>
                     <TableBodyCell>{Math.floor(player.rating)}</TableBodyCell>
                 </TableBodyRow>
