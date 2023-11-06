@@ -1,4 +1,5 @@
 import sqlite3
+import re
 
 from fastapi import APIRouter, HTTPException
 
@@ -27,8 +28,19 @@ async def get_players():
         return [get_response_from_row(row) for row in rows]
 
 
-@router.put("/{username}")
-async def add_player(username: str):
+@router.put("/{username_request}")
+async def add_player(username_request: str):
+    # Trim whitespace
+    username = username_request.strip()
+
+    if len(username) < 2:
+        raise HTTPException(status_code=400, detail="Username must be at least 2 characters long")
+
+    # Make sure the username is alphanumeric with at most one space in between words
+    valid_username_pattern = r"^[a-zA-Z0-9]+( [a-zA-Z0-9]+)?$"
+    if not re.match(valid_username_pattern, username):
+        raise HTTPException(status_code=400, detail="Username must be alphanumeric with at most one space in between words")
+
     with sqlite_db.connection() as con:
         try:
             result = con.execute("INSERT INTO players (username) VALUES (?)", [username])
