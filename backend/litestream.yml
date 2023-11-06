@@ -1,0 +1,8 @@
+dbs:
+  - path: /code/app/db.sqlite
+    replicas:
+      - type: s3
+        bucket: p-ranked-prod
+        path: db.sqlite
+        endpoint: s3.us-west-004.backblazeb2.com
+        force-path-style: true
