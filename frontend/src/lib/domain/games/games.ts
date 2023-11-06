@@ -4,11 +4,11 @@ export interface GameResponse {
     winner_id: number;
     winner_username: string;
     winner_rating: number;
-    winner_rating_gained: number;
+    winner_rating_change: number;
     loser_id: number;
     loser_username: string;
     loser_rating: number;
-    loser_rating_lost: number;
+    loser_rating_change: number;
 }
 
 export interface Game {
@@ -17,11 +17,11 @@ export interface Game {
     winnerId: number;
     winnerUsername: string;
     winnerRating: number;
-    winnerRatingGained: number;
+    winnerRatingChange: number;
     loserId: number;
     loserUsername: string;
     loserRating: number;
-    loserRatingLost: number;
+    loserRatingChange: number;
 }
 
 export const getGameFromReponse = (response: GameResponse): Game => ({
@@ -33,9 +33,9 @@ export const getGameFromReponse = (response: GameResponse): Game => ({
     loserUsername: response.loser_username,
     winnerRating: response.winner_rating,
     loserRating: response.loser_rating,
-    winnerRatingGained: response.winner_rating_gained,
-    loserRatingLost: response.loser_rating_lost,
-});
+    winnerRatingChange: response.winner_rating_change,
+    loserRatingChange: response.loser_rating_change,
+})
 
 export interface SubmitGameRequest {
     winner_id: number;
@@ -49,8 +49,8 @@ export interface SubmitGameResponse {
     old_loser_rating: number;
     new_winner_rating: number;
     new_loser_rating: number;
-    winner_rating_gained: number;
-    loser_rating_lost: number;
+    winner_rating_change: number;
+    loser_rating_change: number;
 }
 
 export interface NewGameResult {
@@ -59,8 +59,8 @@ export interface NewGameResult {
     oldLoserRating: number;
     newWinnerRating: number;
     newLoserRating: number;
-    winnerRatingGained: number;
-    loserRatingLost: number;
+    winnerRatingChange: number;
+    loserRatingChange: number;
 }
 
 export const getGameResultFromResponse = (response: SubmitGameResponse): NewGameResult => ({
@@ -69,6 +69,6 @@ export const getGameResultFromResponse = (response: SubmitGameResponse): NewGame
     oldLoserRating: response.old_loser_rating,
     newWinnerRating: response.new_winner_rating,
     newLoserRating: response.new_loser_rating,
-    winnerRatingGained: response.winner_rating_gained,
-    loserRatingLost: response.loser_rating_lost,
+    winnerRatingChange: response.winner_rating_change,
+    loserRatingChange: response.loser_rating_change,
 });

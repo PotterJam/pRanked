@@ -68,11 +68,11 @@ def __migrations():
                 date_played TEXT DEFAULT CURRENT_TIMESTAMP,
                 winner_id INTEGER NOT NULL,
                 winner_rating REAL NOT NULL,
-                winner_rating_gained REAL NOT NULL,
+                winner_rating_change REAL NOT NULL,
                 winner_rating_deviation REAL NOT NULL,
                 loser_id INTEGER NOT NULL,
                 loser_rating REAL NOT NULL,
-                loser_rating_lost REAL NOT NULL,
+                loser_rating_change REAL NOT NULL,
                 loser_rating_deviation REAL NOT NULL,
                 FOREIGN KEY (winner_id) REFERENCES players(player_id),
                 FOREIGN KEY (loser_id) REFERENCES players(player_id)

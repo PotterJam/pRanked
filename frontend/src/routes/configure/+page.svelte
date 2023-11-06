@@ -12,6 +12,8 @@
     $: playerNames = players.map((p) => p.username);
 
 	let games: Game[] = data.games;
+
+	const formatRatingChange = (no: number) => no > 0 ? `+${Math.floor(no)}` : Math.floor(no);
 </script>
 
 <div class="flex flex-col items-center justify-center pt-10 pb-20 px-2">
@@ -31,8 +33,8 @@
 				{#each games.sort(( a, b ) => b.gameId - a.gameId) as game}
 					<TableBodyRow>
 						<TableBodyCell>{game.gameId}</TableBodyCell>
-						<TableBodyCell>{game.winnerUsername} | {Math.floor(game.winnerRating)} (+{Math.floor(game.winnerRatingGained)})</TableBodyCell>
-						<TableBodyCell>{game.loserUsername} | {Math.floor(game.loserRating)} (-{Math.floor(game.loserRatingLost)})</TableBodyCell>
+						<TableBodyCell>{game.winnerUsername} {Math.floor(game.winnerRating)} ({formatRatingChange(game.winnerRatingChange)})</TableBodyCell>
+						<TableBodyCell>{game.loserUsername} {Math.floor(game.loserRating)} ({formatRatingChange(game.loserRatingChange)})</TableBodyCell>
 						<TableBodyCell>{game.draw ? 'Yes' : ''}</TableBodyCell>
 					</TableBodyRow>
 				{/each}

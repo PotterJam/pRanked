@@ -42,11 +42,11 @@
 			winnerId: winningPlayer.playerId,
 			winnerUsername: winningPlayer.username,
 			winnerRating: newGameResult.oldWinnerRating,
-			winnerRatingGained: newGameResult.winnerRatingGained,
+			winnerRatingChange: newGameResult.winnerRatingChange,
 			loserId: losingPlayer.playerId,
 			loserUsername: losingPlayer.username,
 			loserRating: newGameResult.oldLoserRating,
-			loserRatingLost: newGameResult.loserRatingLost,
+			loserRatingChange: newGameResult.loserRatingChange,
 		};
 
 		games = [newGame, ...games];
