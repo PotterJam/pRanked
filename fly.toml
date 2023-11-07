@@ -1,12 +1,10 @@
-# fly.toml app configuration file generated for p-ranked-2 on 2023-11-06T23:44:12Z
+# fly.toml app configuration file generated for p-ranked on 2023-11-07T17:32:00Z
 #
 # See https://fly.io/docs/reference/configuration/ for information about how to use this file.
 #
 
-app = "p-ranked-2"
+app = "p-ranked"
 primary_region = "lhr"
-
-[build]
 
 [http_service]
   internal_port = 8080

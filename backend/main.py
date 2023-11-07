@@ -1,11 +1,15 @@
-from fastapi import FastAPI
+from fastapi import FastAPI, HTTPException
 from fastapi.middleware.cors import CORSMiddleware
+from starlette.exceptions import HTTPException as StarletteHTTPException
+from starlette.staticfiles import StaticFiles
 
 import run_sqlite_migrations
 from games import games_router
 from player import player_router
 
 app = FastAPI()
+frontend = FastAPI()
+api = FastAPI()
 
 origins = [
     '*',
@@ -28,5 +32,22 @@ app.add_middleware(
 async def startup_event():
     run_sqlite_migrations.main()
 
-app.include_router(player_router.router)
-app.include_router(games_router.router)
+
+class SPAStaticFiles(StaticFiles):
+    async def get_response(self, path: str, scope):
+        try:
+            return await super().get_response(path, scope)
+        except (HTTPException, StarletteHTTPException) as ex:
+            if ex.status_code == 404:
+                return await super().get_response("index.html", scope)
+            else:
+                raise ex
+
+
+frontend.mount("/", SPAStaticFiles(directory="/code/frontend/dist/", html=True), name="spa-static-files")
+
+app.mount('/api', app=api)
+app.mount('/', app=frontend)
+
+api.include_router(player_router.router)
+api.include_router(games_router.router)
