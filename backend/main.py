@@ -3,6 +3,7 @@ from fastapi.middleware.cors import CORSMiddleware
 from starlette.exceptions import HTTPException as StarletteHTTPException
 from starlette.staticfiles import StaticFiles
 
+import auth
 import run_sqlite_migrations
 from games import games_router
 from player import player_router
@@ -11,12 +12,9 @@ app = FastAPI()
 frontend = FastAPI()
 api = FastAPI()
 
+# If this becomes a problem we can restrict it to the actual domains
 origins = [
     '*',
-
-    # If this becomes a problem we can restrict it to the actual domains
-    # "http://localhost:5173",
-    # "https://p-ranking.com",
 ]
 
 app.add_middleware(
@@ -51,3 +49,4 @@ app.mount('/', app=frontend)
 
 api.include_router(player_router.router)
 api.include_router(games_router.router)
+api.include_router(auth.router)

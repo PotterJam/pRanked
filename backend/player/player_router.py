@@ -1,8 +1,9 @@
 import sqlite3
 import re
 
-from fastapi import APIRouter, HTTPException
+from fastapi import APIRouter, HTTPException, Request
 
+from auth import is_authenticated
 from ranking.consts import rating_deviation_default, rating_default
 from utility import sqlite_db
 
@@ -29,7 +30,10 @@ async def get_players():
 
 
 @router.put("/{username_request}")
-async def add_player(username_request: str):
+async def add_player(username_request: str, request: Request):
+    if not is_authenticated(request):
+        raise HTTPException(status_code=404)
+
     # Trim whitespace
     username = username_request.strip()
 

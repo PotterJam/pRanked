@@ -1,9 +1,10 @@
 from datetime import datetime
 
 from dateutil.relativedelta import relativedelta
-from fastapi import APIRouter, HTTPException
+from fastapi import APIRouter, HTTPException, Request
 from pydantic import BaseModel
 
+from auth import is_authenticated
 from ranking.glicko import Glicko
 from ranking.outcome import Outcome
 from ranking.rating import Rating
@@ -75,7 +76,10 @@ def get_new_ratings(winner_rating: Rating, winner_last_played: str | None, loser
 
 # todo: really needs parts splitting out and testing
 @router.post("/submit")
-async def submit_game(submit_game_request: SubmitGameRequest):
+async def submit_game(submit_game_request: SubmitGameRequest, request: Request):
+    if not is_authenticated(request):
+        raise HTTPException(status_code=404)
+
     with sqlite_db.connection() as con:
         # Get the winner_rating, loser_rating, winner_rating_deviation, loser_rating_deviation from the players table for both players
         winner_result = con.execute("SELECT current_rating, current_rating_deviation, last_game_played FROM players WHERE player_id = ?", [submit_game_request.winner_id])

@@ -2,10 +2,19 @@
 
 	import GameSubmitter from '../../components/configure/GameSubmitter.svelte';
 	import AddPlayer from '../../components/configure/AddPlayer.svelte';
-	import { Table, TableBody, TableBodyCell, TableBodyRow, TableHead, TableHeadCell } from 'flowbite-svelte';
+	import { Button, Input, Table, TableBody, TableBodyCell, TableBodyRow, TableHead, TableHeadCell } from 'flowbite-svelte';
 
 	import type { Game } from '$lib/domain/games/games';
 	import type { ConfigureLoadData } from '$lib/domain/routeLoadReturns';
+
+	import { authenticated } from '$lib/auth';
+	import httpClient from '$lib/httpClient';
+
+	let adminPassword = '';
+	const authenticateAdmin = async () => {
+		const result = await httpClient.post('/authenticate/', null, { headers: { 'admin_password': adminPassword }});
+		$authenticated = result.data.authenticated;
+	}
 
     export let data: ConfigureLoadData;
     let players = data.players;
@@ -17,6 +26,14 @@
 </script>
 
 <div class="flex flex-col items-center justify-center pt-10 pb-20 px-2">
+	{#if !$authenticated}
+		<div class="text-center pt-7 pb-5 px-2 text-3xl font-bold">Admin login</div>
+		<div class="flex">
+			<Input class="w-48" placeholder="Password..." rows="1" bind:value={adminPassword} />
+			<Button class="ml-2" on:click={authenticateAdmin}> Login </Button>
+		</div>
+	{/if}
+	
 	<AddPlayer playerNames={playerNames} bind:players={players}/>
 
 	<GameSubmitter players={players} bind:games={games}/>
