@@ -5,7 +5,7 @@ COPY frontend/package*.json .
 RUN npm ci
 COPY frontend /frontend/
 
-ENV PUBLIC_BASE_URL='https://p-ranked.fly.dev/api'
+ENV PUBLIC_BASE_URL='https://p-ranked.fly.dev/'
 
 RUN npm run build
 RUN npm prune --production

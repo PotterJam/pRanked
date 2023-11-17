@@ -87,6 +87,13 @@ def __migrations():
             
             CREATE INDEX idx_games ON players_rating_history(player_id);
             """
+        ),
+        (
+            2,
+            "Drop useless player_rating_history table",
+            """
+            DROP TABLE players_rating_history;
+            """
         )
     ]
 

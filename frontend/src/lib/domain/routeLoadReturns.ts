@@ -13,5 +13,5 @@ export interface ConfigureLeaderboardData {
 }
 
 export interface GraphsLoadData {
-    ratingHistory: { [key: string]: RatingHistory[] }
+    ratingHistoryGraphData: RatingHistory[]
 }
