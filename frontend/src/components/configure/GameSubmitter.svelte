@@ -47,6 +47,7 @@
 			loserUsername: losingPlayer.username,
 			loserRating: newGameResult.oldLoserRating,
 			loserRatingChange: newGameResult.loserRatingChange,
+			datePlayed: newGameResult.datePlayed,
 		};
 
 		games = [newGame, ...games];

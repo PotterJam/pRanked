@@ -16,7 +16,7 @@ router = APIRouter(prefix='/games')
 @router.get("/")
 async def get_games():
     with sqlite_db.connection() as con:
-        game_result = con.execute("SELECT game_id, draw, winner_id, winner_rating, winner_rating_change, loser_id, loser_rating, loser_rating_change FROM games")
+        game_result = con.execute("SELECT game_id, draw, winner_id, winner_rating, winner_rating_change, loser_id, loser_rating, loser_rating_change, date_played FROM games")
         game_rows = game_result.fetchall()
         if game_rows is None:
             raise HTTPException(status_code=404, detail="Games not found")
@@ -40,6 +40,7 @@ async def get_games():
                 "loser_username": players[row[5]],
                 "loser_rating": row[6],
                 "loser_rating_change": row[7],
+                "date_played": row[8],
             }
 
         return [row_to_response(row) for row in game_rows]
@@ -142,5 +143,6 @@ async def submit_game(submit_game_request: SubmitGameRequest, request: Request):
             "new_loser_rating": new_loser_rating,
             "winner_rating_change": winner_rating_change,
             "loser_rating_change": loser_rating_change,
-            "game_id": game_id
+            "game_id": game_id,
+            "date_played": datetime.now().isoformat(),
         }

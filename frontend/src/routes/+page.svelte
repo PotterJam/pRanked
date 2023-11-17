@@ -6,7 +6,7 @@
     let players = data.players;
 </script>
 
-<div class="m-5 mt-10 max-w-md m-auto">
+<div class="m-5 mt-10 max-w-md mx-auto">
     <Table>
         <TableHead>
             <TableHeadCell>Rank</TableHeadCell>

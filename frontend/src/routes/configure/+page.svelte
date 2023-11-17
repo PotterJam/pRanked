@@ -2,7 +2,7 @@
 
 	import GameSubmitter from '../../components/configure/GameSubmitter.svelte';
 	import AddPlayer from '../../components/configure/AddPlayer.svelte';
-	import { Button, Input, Table, TableBody, TableBodyCell, TableBodyRow, TableHead, TableHeadCell } from 'flowbite-svelte';
+	import { Button, Checkbox, Input, Table, TableBody, TableBodyCell, TableBodyRow, TableHead, TableHeadCell } from 'flowbite-svelte';
 
 	import type { Game } from '$lib/domain/games/games';
 	import type { ConfigureLoadData } from '$lib/domain/routeLoadReturns';
@@ -38,10 +38,10 @@
 
 	<GameSubmitter players={players} bind:games={games}/>
 
-	<div class="m-3 mt-10">
+	<div class="m-3 mt-10 overflow-x w-full sm:w-fit">
 		<Table>
 			<TableHead>
-				<TableHeadCell>Game</TableHeadCell>
+				<TableHeadCell>Date</TableHeadCell>
 				<TableHeadCell>Winner</TableHeadCell>
 				<TableHeadCell>Loser</TableHeadCell>
 				<TableHeadCell>Draw</TableHeadCell>
@@ -49,10 +49,12 @@
 			<TableBody>
 				{#each games.sort(( a, b ) => b.gameId - a.gameId) as game}
 					<TableBodyRow>
-						<TableBodyCell>{game.gameId}</TableBodyCell>
-						<TableBodyCell>{game.winnerUsername} {Math.floor(game.winnerRating)} ({formatRatingChange(game.winnerRatingChange)})</TableBodyCell>
-						<TableBodyCell>{game.loserUsername} {Math.floor(game.loserRating)} ({formatRatingChange(game.loserRatingChange)})</TableBodyCell>
-						<TableBodyCell>{game.draw ? 'Yes' : ''}</TableBodyCell>
+						<TableBodyCell>{new Date(game.datePlayed).toLocaleDateString('en-GB')}</TableBodyCell>
+						<TableBodyCell>{game.winnerUsername} {Math.floor(game.winnerRating)} (<span class="text-green-600">{formatRatingChange(game.winnerRatingChange)}</span>)</TableBodyCell>
+						<TableBodyCell>{game.loserUsername} {Math.floor(game.loserRating)} (<span class="text-red-600">{formatRatingChange(game.loserRatingChange)}</span>)</TableBodyCell>
+						<TableHeadCell>
+							<Checkbox disabled checked={game.draw}/>
+						</TableHeadCell>
 					</TableBodyRow>
 				{/each}
 			</TableBody>
