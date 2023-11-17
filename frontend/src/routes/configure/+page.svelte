@@ -49,7 +49,7 @@
 			<TableBody>
 				{#each games.sort(( a, b ) => b.gameId - a.gameId) as game}
 					<TableBodyRow>
-						<TableBodyCell>{new Date(game.datePlayed).toLocaleDateString('en-GB')}</TableBodyCell>
+						<TableBodyCell>{game.datePlayed.toLocaleDateString('en-GB')}</TableBodyCell>
 						<TableBodyCell>{game.winnerUsername} {Math.floor(game.winnerRating)} (<span class="text-green-600">{formatRatingChange(game.winnerRatingChange)}</span>)</TableBodyCell>
 						<TableBodyCell>{game.loserUsername} {Math.floor(game.loserRating)} (<span class="text-red-600">{formatRatingChange(game.loserRatingChange)}</span>)</TableBodyCell>
 						<TableHeadCell>

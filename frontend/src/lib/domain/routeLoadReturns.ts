@@ -1,5 +1,5 @@
 import type { Game } from "./games/games"
-import type { Player } from "./player/player"
+import type { Player, RatingHistory } from "./player/player"
 
 
 export interface ConfigureLoadData {
@@ -10,4 +10,8 @@ export interface ConfigureLoadData {
 
 export interface ConfigureLeaderboardData {
     players: Player[]
+}
+
+export interface GraphsLoadData {
+    ratingHistory: { [key: string]: RatingHistory[] }
 }

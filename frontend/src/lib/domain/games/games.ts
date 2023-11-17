@@ -23,7 +23,7 @@ export interface Game {
     loserUsername: string;
     loserRating: number;
     loserRatingChange: number;
-    datePlayed: string;
+    datePlayed: Date;
 }
 
 export const getGameFromReponse = (response: GameResponse): Game => ({
@@ -37,7 +37,7 @@ export const getGameFromReponse = (response: GameResponse): Game => ({
     loserRating: response.loser_rating,
     winnerRatingChange: response.winner_rating_change,
     loserRatingChange: response.loser_rating_change,
-    datePlayed: response.date_played,
+    datePlayed: new Date(response.date_played),
 })
 
 export interface SubmitGameRequest {
@@ -65,7 +65,7 @@ export interface NewGameResult {
     newLoserRating: number;
     winnerRatingChange: number;
     loserRatingChange: number;
-    datePlayed: string;
+    datePlayed: Date;
 }
 
 export const getGameResultFromResponse = (response: SubmitGameResponse): NewGameResult => ({
@@ -76,5 +76,5 @@ export const getGameResultFromResponse = (response: SubmitGameResponse): NewGame
     newLoserRating: response.new_loser_rating,
     winnerRatingChange: response.winner_rating_change,
     loserRatingChange: response.loser_rating_change,
-    datePlayed: response.date_played,
+    datePlayed: new Date(response.date_played),
 });
