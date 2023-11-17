@@ -6,16 +6,16 @@ import { authenticated } from '$lib/auth';
 
 export async function load(): Promise<ConfigureLoadData> {
     try {
-        const result = await httpClient.post('/authenticate/');
+        const result = await httpClient.post('/api/authenticate/');
         if (result.status === 200) {
             authenticated.set(result.data.authenticated);
         }
     } catch (e) {}
     
-    const playersResp = await httpClient.get<PlayerResponse[]>('players/');
+    const playersResp = await httpClient.get<PlayerResponse[]>('/api/players/');
     const players = playersResp.data.map(getPlayerFromReponse);
 
-    const gamesResp = await httpClient.get<GameResponse[]>('games/');
+    const gamesResp = await httpClient.get<GameResponse[]>('/api/games/');
     const games = gamesResp.data.map(getGameFromReponse);
 
     return {

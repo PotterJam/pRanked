@@ -24,7 +24,7 @@
 		}
 
 		onSubmit = true;
-		const submitGameResp = await httpClient.post('/games/submit', {
+		const submitGameResp = await httpClient.post('/api/games/submit', {
 			winner_id: winningPlayer.playerId,
 			loser_id: losingPlayer.playerId,
 			draw: draw

@@ -3,7 +3,7 @@ import { getPlayerFromReponse, type PlayerResponse } from '$lib/domain/player/pl
 import type { ConfigureLeaderboardData } from '$lib/domain/routeLoadReturns'
 
 export async function load(): Promise<ConfigureLeaderboardData> {
-    const playersResp = await httpClient.get<PlayerResponse[]>('players/');
+    const playersResp = await httpClient.get<PlayerResponse[]>('api/players/');
     const players = playersResp.data.map(getPlayerFromReponse);
 
     return {

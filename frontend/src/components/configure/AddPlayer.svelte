@@ -35,7 +35,7 @@
 
         if (newPlayerNameValid) {
             try {
-                const res = await httpClient.put<PlayerResponse>('/players/' + newPlayerName);
+                const res = await httpClient.put<PlayerResponse>('/api/players/' + newPlayerName);
                 const newPlayer = getPlayerFromReponse(res.data);
                 
                 addPlayerDisabled = true;

@@ -1,3 +1,5 @@
+import os
+
 from fastapi import FastAPI, HTTPException
 from fastapi.middleware.cors import CORSMiddleware
 from starlette.exceptions import HTTPException as StarletteHTTPException
@@ -42,10 +44,11 @@ class SPAStaticFiles(StaticFiles):
                 raise ex
 
 
-frontend.mount("/", SPAStaticFiles(directory="/code/frontend/dist/", html=True), name="spa-static-files")
-
 app.mount('/api', app=api)
-app.mount('/', app=frontend)
+
+if os.getenv("ENVIRONMENT") != "dev":
+    frontend.mount("/", SPAStaticFiles(directory="/code/frontend/dist/", html=True), name="spa-static-files")
+    app.mount('/', app=frontend)
 
 api.include_router(player_router.router)
 api.include_router(games_router.router)

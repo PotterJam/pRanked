@@ -1,9 +1,8 @@
 import { PUBLIC_BASE_URL } from '$env/static/public'
 import axios, { AxiosError } from 'axios';
 
-const httpClient = axios.create({
-    baseURL: PUBLIC_BASE_URL
-});
+const axiosOptions = import.meta.env.PROD ? { baseURL: PUBLIC_BASE_URL } : undefined;
+const httpClient = axios.create(axiosOptions);
 
 export default httpClient;
 

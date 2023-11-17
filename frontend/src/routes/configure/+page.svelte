@@ -12,7 +12,7 @@
 
 	let adminPassword = '';
 	const authenticateAdmin = async () => {
-		const result = await httpClient.post('/authenticate/', null, { headers: { 'admin_password': adminPassword }});
+		const result = await httpClient.post('/api/authenticate/', null, { headers: { 'admin_password': adminPassword }});
 		$authenticated = result.data.authenticated;
 	}
 
